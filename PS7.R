@@ -47,27 +47,3 @@ sg.int <- function(g,..., lower, upper, dimensions, parallelCores=1){
   # return product
   val.sp
 }
-
-####################
-### Unit testing ###
-####################
-
-#################
-### Benchmark ###
-#################
-
-## measure speed depending on 1) number of dimensions and
-## 2) number of cores
-
-# create test function
-testFn0 <- function(x) {
-  prod(cos(x))
-}
-
-# run sg.int function with three-dimensions, comparing 2 versus 4
-microbenchmark(sg.int(testFn0, lower=rep(0,3), upper=rep(1,3), dimensions=3, parallelCores=2), times=100)
-microbenchmark(sg.int(testFn0, lower=rep(0,3), upper=rep(1,3), dimensions=3, parallelCores=4), times=100)
-
-# run sg.int function with five-dimensions, comparing 2 versus 4
-microbenchmark(sg.int(testFn0, lower=rep(0,5), upper=rep(1,5), dimensions=5, parallelCores=2), times=100)
-microbenchmark(sg.int(testFn0, lower=rep(0,5), upper=rep(1,5), dimensions=5, parallelCores=4), times=100)
