@@ -22,12 +22,12 @@ sg.int <- function(g,..., lower, upper, parallelCores=TRUE){
     # detect the number of cores
     nCores <- detectCores() - 1
     # initiate cluster
-    cl <- makeCluster(nCores)
+    cl <- makePSOCKcluster(nCores)
     registerDoParallel(cl)
     # create data frame from all combination of vectors and turn into matrix
-    allCombos <- foreach(i = 1:dimensions, .combine = c)  %dopar%  seq(lower[i], upper[i]-1, by=1)
-    gridss <- as.matrix(expand.grid(unlist(allCombos)))
-    stopImplicitCluster()
+    gridss <- as.matrix(expand.grid(unlist(foreach(i = 1:dimensions, .combine = c)
+                                           %dopar% seq(lower[i], upper[i]-1, by=1))))
+    stopCluster(cl)
   }
   # create nodes an weights to be used for integration from SpareGrid package
   # allow for multiple dimensions set by user
