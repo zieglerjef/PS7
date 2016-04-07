@@ -2,7 +2,7 @@
 
 Within `PS7.R` there is test execution and benchmarking (for both the `sg.int` and `monteCarlo.int` functions).  
 
-## Files
+* Files
 
 `sg.int.R`: Function allows for multiple dimensions and parallel processing (cross-platform).
 
