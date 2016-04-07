@@ -1,30 +1,46 @@
-sg.int<-function(g,...,lower,upper)
+#############################
+### Numerical integration ###
+#############################
 
-{ require("SparseGrid")
+# load libraries
+library(SparseGrid)
+library(cubature)
+library(doParallel)
+library(testthat)
+library(microbenchmark)
 
- lower<-floor(lower)
+## alter function to take multiple dimensions and 
+## adjust the number of cores used in multicore processing (cross-platform)
 
- upper<-ceiling(upper)
-
- if (any(lower>upper)) stop("lower must be smaller than upper")
-
- gridss<-as.matrix(expand.grid(seq(lower[1],upper[1]-1,by=1),seq(lower[2],upper[2]-1,by=1)))
-
- sp.grid <- createIntegrationGrid( 'KPU', dimension=2, k=5 )
-
- nodes<-gridss[1,]+sp.grid$nodes
-
- weights<-sp.grid$weights
-
- for (i in 2:nrow(gridss))
-
- {
+# begin numerical integration function
+sg.int <- function(g,..., lower, upper, dimensions, parallelCores=1){
+  # allows the function to have parallel processing
+  # doParellel allows for multicore functionality even w/ Windows
+  registerDoParallel(cores=parallelCores)
+  
+  lower<-floor(lower)
+  
+  upper<-ceiling(upper)
+  
+  if (any(lower>upper)) stop("lower must be smaller than upper")
+  
+  gridss<-as.matrix(expand.grid(seq(lower[1],upper[1]-1,by=1),seq(lower[2],upper[2]-1,by=1)))
+  
+  sp.grid <- createIntegrationGrid( 'KPU', dimension=2, k=5 )
+  
+  nodes<-gridss[1,]+sp.grid$nodes
+  
+  weights<-sp.grid$weights
+  
+  for (i in 2:nrow(gridss))
+    
+  {
     nodes<-rbind(nodes,gridss[i,]+sp.grid$nodes)  
-
+    
     weights<-c(weights,sp.grid$weights)
-
+    
   }
-
+  
   gx.sp <- apply(nodes, 1, g,...)
   val.sp <- gx.sp %*%weights
   val.sp
