@@ -17,7 +17,6 @@ sg.int <- function(g,..., lower, upper, parallelCores=TRUE){
   dimensions <- length(lower)
   # apply the function to all the dimensions specified by user, create vector each iteration
   # create data frame from all combination of vectors and turn into matrix
-  gridss <- as.matrix(expand.grid(unlist(lapply(1:dimensions, function(i) seq(lower[i], upper[i]-1, by=1)))))
   # allow parallel processing
   if(parallelCores==T){
     # detect the number of cores
@@ -29,6 +28,9 @@ sg.int <- function(g,..., lower, upper, parallelCores=TRUE){
     gridss <- as.matrix(expand.grid(unlist(foreach(i = 1:dimensions, .combine = c)
                                            %dopar% seq(lower[i], upper[i]-1, by=1))))
     stopCluster(cl)
+  }
+  else{
+    gridss <- as.matrix(expand.grid(unlist(lapply(1:dimensions, function(i) seq(lower[i], upper[i]-1, by=1)))))
   }
   # create nodes an weights to be used for integration from SpareGrid package
   # allow for multiple dimensions set by user
