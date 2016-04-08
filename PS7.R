@@ -61,7 +61,7 @@ microbenchmark(sg.int(testFn2, lower=rep(0,5), upper=rep(1,5), parallelCores=FAL
 ####################################
 
 ### accuracy ###
-# create test function
+# create test function (multivariate normal)
 accuracyTest <- function(x){
   dmvnorm(x, mean=rep(0, 2), sigma=diag(rep(1, 2)))
 }
@@ -81,3 +81,17 @@ microbenchmark(adaptIntegrate(testFn2, rep(0,5), rep(1,5)), times=100)
 microbenchmark(sg.int(testFn2, lower=rep(0,5), upper=rep(1,5), parallelCores=FALSE), times=100)
 
 ## sg.int is faster, but this is largely a function of the tolerance and maxEval defaults
+
+###############################
+### Monte Carlo integration ###
+###############################
+
+# execute sg.int.R file
+source("monteCarlo.int.R")
+
+# execute testThat.R file
+test_file("testThat.mc.R")
+# not very accurate
+
+# test monteCarlo.int with accuracyTest
+monteCarlo.int(accuracyTest, lower = -4, upper = .5, n=100000, dimensions=2) - correctAnswer 
