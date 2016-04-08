@@ -5,12 +5,12 @@
 ## function takes multiple dimensions and 
 ## allows for multicore processing (cross-platform)
 
-mcInt <- function(ftn, a, b, n, dimensions){
-  u <- runif(n*dimensions, a, b)
+monteCarlo.int <- function(g,..., lower, upper, n, dimensions, parallelCores=TRUE){
+  # create random points 
+  u <- runif(n*dimensions, lower, upper)
+  # place in matrix w/ each column = dimension
   these <- matrix(u, ncol=dimensions)
-  x <- apply(these,1, ftn)
-  return(mean(x)*(b-a)^dimensions)
+  
+  x <- apply(these, 1, g,...)
+  return(mean(x)*(upper-lower)^dimensions)
 }
-
-mcInt(myNorm, -4, .5, n=100000, dimensions=2)-ans 
-
