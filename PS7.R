@@ -5,6 +5,7 @@ library(foreach)
 library(doParallel)
 library(testthat)
 library(microbenchmark)
+library(mvtnorm)
 
 # set working directory
 setwd("~/Documents/Git/Class/PS7")
@@ -60,16 +61,19 @@ microbenchmark(sg.int(testFn2, lower=rep(0,5), upper=rep(1,5), parallelCores=FAL
 ####################################
 
 ### accuracy ###
-adaptIntegrate(testFn1, rep(0,3), rep(1,3))
-sg.int(testFn1, lower=rep(0,3), upper=rep(1,3))
+# create test function
+accuracyTest <- function(x){
+  dmvnorm(x, mean=rep(0, 2), sigma=diag(rep(1, 2)))
+}
+# correct answer
+correctAnswer <- as.numeric(pmvnorm(upper=rep(.5, 2), mean=rep(0, 2), sigma=diag(rep(1, 2))))
 
-adaptIntegrate(testFn2, rep(0,5), rep(1,5))
-sg.int(testFn2, lower=rep(0,5), upper=rep(1,5))
+abs(adaptIntegrate(accuracyTest, lowerLimit=rep(-100, 2), upperLimit=rep(.5, 2))$integral - correctAnswer)
+abs(sg.int(accuracyTest, lower=rep(-100,2), upper=rep(0.5, 2)) - correctAnswer)
 
-## get very similar answers, but adaptIntegrate slightly more accurate
+## adaptIntegrate more accurate
 
 ### speed ###
-
 microbenchmark(adaptIntegrate(testFn1, rep(0,3), rep(1,3)), times=100)
 microbenchmark(sg.int(testFn1, lower=rep(0,3), upper=rep(1,3), parallelCores=FALSE), times=100)
 
