@@ -93,5 +93,7 @@ source("monteCarlo.int.R")
 test_file("testThat.mc.R")
 # not very accurate
 
-# test monteCarlo.int with accuracyTest
-monteCarlo.int(accuracyTest, lower = -4, upper = .5, n=100000, dimensions=2) - correctAnswer 
+# benchmark
+# run sg.int function with five-dimensions, w/ and w/o parallelCores
+microbenchmark(monteCarlo.int(testFn2, lower=0, upper=1,  n=100000, dimensions=5, parallelCores=TRUE), times=100)
+microbenchmark(monteCarlo.int(testFn2, lower=0, upper=1,  n=100000, dimensions=5, parallelCores=FALSE), times=100)
