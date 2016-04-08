@@ -23,7 +23,7 @@ sg.int <- function(g,..., lower, upper, parallelCores=TRUE){
     # detect the number of cores
     nCores <- detectCores() - 1
     # initiate cluster
-    cl <- makePSOCKcluster(nCores)
+    cl <- makeCluster(nCores)
     registerDoParallel(cl)
     # create data frame from all combination of vectors and turn into matrix
     gridss <- as.matrix(expand.grid(unlist(foreach(i = 1:dimensions, .combine = c)
