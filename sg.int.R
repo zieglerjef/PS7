@@ -2,8 +2,8 @@
 ### Numerical integration ###
 #############################
 
-## alter function to take multiple dimensions and 
-## adjust the number of cores used in multicore processing (cross-platform)
+## function takes multiple dimensions and 
+## allows for multicore processing (cross-platform)
 
 # begin numerical integration function
 sg.int <- function(g,..., lower, upper, parallelCores=TRUE){
@@ -18,6 +18,7 @@ sg.int <- function(g,..., lower, upper, parallelCores=TRUE){
   # apply the function to all the dimensions specified by user, create vector each iteration
   # create data frame from all combination of vectors and turn into matrix
   gridss <- as.matrix(expand.grid(unlist(lapply(1:dimensions, function(i) seq(lower[i], upper[i]-1, by=1)))))
+  # allow parallel processing
   if(parallelCores==T){
     # detect the number of cores
     nCores <- detectCores() - 1
