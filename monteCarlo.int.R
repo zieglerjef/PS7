@@ -3,7 +3,7 @@
 ###############################
 
 ## function takes multiple dimensions and 
-## allows for multicore processing (cross-platform)
+## allows for multicore processing (using parallel package, not cross-platform)
 
 monteCarlo.int <- function(g,..., lower, upper, n, dimensions, parallelCores=TRUE){
   # create random points 
