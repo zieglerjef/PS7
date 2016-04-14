@@ -6,7 +6,7 @@ Within `PS7.R` there is test execution and benchmarking (for both the `sg.int` a
 
 `sg.int.R`: Function allows for multiple dimensions and parallel processing (cross-platform).
 
-`monteCarlo.int.R`: Function that performs Monte Carlo integration (numerical integration using random numbers). Also allows for parallel processing (cross-platform).
+`monteCarlo.int.R`: Function that performs Monte Carlo integration (numerical integration using random numbers). Also allows for parallel processing (uses parallel package, not cross-platform).
 
 `testThat.R`: Performs tests on `sg.int.R` function.
 
