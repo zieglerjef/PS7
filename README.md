@@ -1,6 +1,6 @@
 # PS7
 
-Within `PS7.R` there is test execution and benchmarking (for both the `sg.int` and `monteCarlo.int` functions).  
+Within `PS7.R` there is test execution and benchmarking (for both the `sg.int` and `monteCarlo.int` functions when these functions are in the same working directory as the problem set `R.`file).  
 
 ### Files
 
